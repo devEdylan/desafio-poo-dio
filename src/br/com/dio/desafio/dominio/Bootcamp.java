@@ -1,19 +1,16 @@
 package br.com.dio.desafio.dominio;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Bootcamp {
     private String nome;
     private String descricao;
-    private final LocalDate dataInicial = LocalDate.now();
-    private final LocalDate dataFinal = dataInicial.plusDays(45);
-    private Set<Dev> devsInscritos = new HashSet<>();
-    private Set<Conteudo> conteudos = new LinkedHashSet<>();
-
+    private final LocalDate dataInicio = LocalDate.now();
+    private final LocalDate dataFim = dataInicio.plusDays(45);
+    private final Set<Conteudo> conteudos = new LinkedHashSet<>();
+    private final Set<Dev> devs = new HashSet<>();
+    private Integer cargaHorariaTotalCursos;
 
     public String getNome() {
         return nome;
@@ -31,28 +28,28 @@ public class Bootcamp {
         this.descricao = descricao;
     }
 
-    public LocalDate getDataInicial() {
-        return dataInicial;
+    public LocalDate getDataInicio() {
+        return dataInicio;
     }
 
-    public LocalDate getDataFinal() {
-        return dataFinal;
-    }
-
-    public Set<Dev> getDevsInscritos() {
-        return devsInscritos;
-    }
-
-    public void setDevsInscritos(Set<Dev> devsInscritos) {
-        this.devsInscritos = devsInscritos;
+    public LocalDate getDataFim() {
+        return dataFim;
     }
 
     public Set<Conteudo> getConteudos() {
         return conteudos;
     }
 
-    public void setConteudos(Set<Conteudo> conteudos) {
-        this.conteudos = conteudos;
+
+    public Set<Dev> getDevs() {
+        return devs;
+    }
+
+    public double getCargaHorariaTotalCursos(){
+        if (conteudos.size() == 0){
+            return 0;
+        }
+        return conteudos.stream().filter(c -> c.getClass() == Curso.class).mapToInt(c -> ((Curso) c).getCargaHoraria()).sum();
     }
 
     @Override
@@ -60,11 +57,11 @@ public class Bootcamp {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Bootcamp bootcamp = (Bootcamp) o;
-        return Objects.equals(nome, bootcamp.nome) && Objects.equals(descricao, bootcamp.descricao) && Objects.equals(dataInicial, bootcamp.dataInicial) && Objects.equals(dataFinal, bootcamp.dataFinal) && Objects.equals(devsInscritos, bootcamp.devsInscritos) && Objects.equals(conteudos, bootcamp.conteudos);
+        return Objects.equals(getNome(), bootcamp.getNome()) && Objects.equals(getDescricao(), bootcamp.getDescricao()) && Objects.equals(getDataInicio(), bootcamp.getDataInicio()) && Objects.equals(getDataFim(), bootcamp.getDataFim()) && Objects.equals(getConteudos(), bootcamp.getConteudos()) && Objects.equals(getDevs(), bootcamp.getDevs());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nome, descricao, dataInicial, dataFinal, devsInscritos, conteudos);
+        return Objects.hash(getNome(), getDescricao(), getDataInicio(), getDataFim(), getConteudos(), getDevs());
     }
 }
